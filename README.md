@@ -1,5 +1,6 @@
 
 
+
 # Task Management API
 
 A simple Task Management API built using Django and Django Rest Framework. This API allows users to manage tasks with CRUD operations, apply filters to tasks, and handle authentication via tokens. It includes role-based access control, allowing only authenticated users to manage their own tasks, while admin users can access and manage all tasks.
@@ -75,27 +76,114 @@ A simple Task Management API built using Django and Django Rest Framework. This 
 ### **Authentication Endpoints**
 
 - `POST /api-token-auth/`: Obtain a token for authentication.
-  - **Request Body**: `{ "username": "yourusername", "password": "yourpassword" }`
-  - **Response**: `{ "token": "your_token_here" }`
+
+#### Curl Command:
+
+```bash
+curl -X POST http://localhost:8000/api-token-auth/ \
+     -H "Content-Type: application/json" \
+     -d '{"username": "yourusername", "password": "yourpassword"}'
+```
+
+- **Request Body**: 
+  ```json
+  {
+    "username": "yourusername",
+    "password": "yourpassword"
+  }
+  ```
+
+- **Response**: 
+  ```json
+  {
+    "token": "your_token_here"
+  }
+  ```
 
 ### **Task Management Endpoints**
 
-- `GET /api/tasks/`: List all tasks.
-- `POST /api/tasks/`: Create a new task.
-  - **Request Body**: `{ "title": "Task Title", "description": "Task Description", "completed": false }`
-- `GET /api/tasks/{id}/`: Retrieve a specific task by ID.
-- `PUT /api/tasks/{id}/`: Update a task by ID.
-  - **Request Body**: `{ "title": "Updated Task", "description": "Updated Description", "completed": true }`
-- `DELETE /api/tasks/{id}/`: Delete a task by ID.
+#### 1. `GET /api/tasks/`: List all tasks.
+
+#### Curl Command:
+
+```bash
+curl -X GET http://localhost:8000/api/tasks/ \
+     -H "Authorization: Token <your_token>"
+```
+
+#### 2. `POST /api/tasks/`: Create a new task.
+
+#### Curl Command:
+
+```bash
+curl -X POST http://localhost:8000/api/tasks/ \
+     -H "Authorization: Token <your_token>" \
+     -H "Content-Type: application/json" \
+     -d '{"title": "Task Title", "description": "Task Description", "completed": false}'
+```
+
+- **Request Body**:
+  ```json
+  {
+    "title": "Task Title",
+    "description": "Task Description",
+    "completed": false
+  }
+  ```
+
+#### 3. `GET /api/tasks/{id}/`: Retrieve a specific task by ID.
+
+#### Curl Command:
+
+```bash
+curl -X GET http://localhost:8000/api/tasks/1/ \
+     -H "Authorization: Token <your_token>"
+```
+
+#### 4. `PUT /api/tasks/{id}/`: Update a task by ID.
+
+#### Curl Command:
+
+```bash
+curl -X PUT http://localhost:8000/api/tasks/1/ \
+     -H "Authorization: Token <your_token>" \
+     -H "Content-Type: application/json" \
+     -d '{"title": "Updated Task", "description": "Updated Description", "completed": true}'
+```
+
+- **Request Body**:
+  ```json
+  {
+    "title": "Updated Task",
+    "description": "Updated Description",
+    "completed": true
+  }
+  ```
+
+#### 5. `DELETE /api/tasks/{id}/`: Delete a task by ID.
+
+#### Curl Command:
+
+```bash
+curl -X DELETE http://localhost:8000/api/tasks/1/ \
+     -H "Authorization: Token <your_token>"
+```
 
 ### **Filtering and Pagination**
 
-- You can filter tasks using query parameters:
-  - `completed=true/false`: Filter tasks by completion status.
-  - `created_after={date}`: Filter tasks created after a specific date.
-  - `updated_after={date}`: Filter tasks updated after a specific date.
+You can filter tasks using query parameters:
+- `completed=true/false`: Filter tasks by completion status.
+- `created_after={date}`: Filter tasks created after a specific date.
+- `updated_after={date}`: Filter tasks updated after a specific date.
 
-- Pagination is applied by default with 10 tasks per page.
+#### Example Curl Command for Filtering:
+
+```bash
+curl -X GET "http://localhost:8000/api/tasks/?completed=true" \
+     -H "Authorization: Token <your_token>"
+```
+
+Pagination is applied by default with 10 tasks per page.
 
 ## Permissions
 
@@ -118,4 +206,7 @@ To run the tests, use Django's built-in testing framework or `pytest`:
     ```bash
     pytest
     ```
+
+---
+
 
